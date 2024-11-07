@@ -52,7 +52,20 @@ opkg install nginx
 mkdir -p /www/wwwroot/baidupcs-web
 ```
 
-#### 2.3 创建 Nginx 配置文件
+#### 2.3 配置 Nginx HTTP 认证
+
+#### 2.3.1 安装 htpasswd 工具
+
+```bash
+# 安装 htpasswd 工具
+opkg update
+opkg install apache-utils
+
+# 创建密码文件（根据提示输入密码）
+htpasswd -c /etc/nginx/passwd your_username
+```
+
+#### 2.3.2 创建 Nginx 配置文件
 
 创建文件 `/etc/nginx/conf.d/baidupcs-web.conf`：
 
@@ -60,19 +73,26 @@ mkdir -p /www/wwwroot/baidupcs-web
 server {
     listen 11892;
     server_name localhost;
+
+    # 添加 HTTP 基本认证
+    auth_basic "Restricted Access";
+    auth_basic_user_file /etc/nginx/passwd;
+
     # 前端静态文件
     location / {
         root /www/netdisk;
         try_files $uri $uri/ /index.html;
         index index.html;
     }
+
     # API 反向代理
     location /api/ {
         proxy_pass http://localhost:11663/api/;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
+        
         # CORS 配置
-        add_header 'Access-Control-Allow-Origin' '';
+        add_header 'Access-Control-Allow-Origin' '*';
         add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
         add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
     }
@@ -104,7 +124,21 @@ nginx -t
 - 开发环境：<http://localhost:3000>
 - 生产环境：<http://192.168.100.1:11892>
 
+#### 前端预览效果
+
+![alt text](image.png)
+
+#### 后端预览效果
+
+![alt text](image-1.png)
+
 ## 注意事项
+
+### 0. 后端配置
+
+- 后端服务参考仓库里面的BaiduPCS-Go-API
+- 新建一个tmux，在里面设置好相关配置和BDUSS、STOKEN
+- 在tmux中运行 `BaiduPCS-GO --port 11663`, 默认已经添加环境变量
 
 ### 1. 端口配置
 
@@ -145,6 +179,13 @@ uci commit firewall
 - 检查文件是否正确部署到 `/www/netdisk/`
 - 检查文件权限：`ls -la /www/netdisk/`
 - 确保 Nginx 配置中的 root 路径正确
+
+### 3.4 认证相关问题
+
+- 如果忘记密码，可以重新运行 `htpasswd` 命令创建新密码
+- 如果要添加新用户：`htpasswd /etc/nginx/passwd new_username`
+- 如果要删除用户：`htpasswd -D /etc/nginx/passwd username`
+- 如果要修改现有用户密码：`htpasswd /etc/nginx/passwd existing_username`
 
 ## 项目结构
 
