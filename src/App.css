@@ -1,0 +1,10 @@
+.ant-table-cell {
+  cursor: default;
+}
+
+.context-menu {
+  background: white;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+} 
