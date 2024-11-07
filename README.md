@@ -126,7 +126,6 @@ uci commit firewall
 /etc/init.d/firewall restart
 ```
 
-
 ### 3. 常见问题排查
 
 #### 3.1 无法访问网站
