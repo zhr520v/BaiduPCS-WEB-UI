@@ -1,6 +1,14 @@
 # BaiduPCS-WEB-new
 
-基于qjfoidnh大佬的PCS后端API尝试前端web界面实现
+基于@qjfoidnh大佬的3.9.5的源码和@wuzhican大佬给出的WEB API写了个简单的WEB页面
+
+![alt text](image.png)
+
+配合后端，可以将百度云完全托管在家庭服务器或者软路由中
+再结合类似于DDNSTO这种内网穿透工具，可以实现人在外网环境下挂起百度云下载服务
+
+## PS：本软件不提供超出官方客户端的下载提速，有重度使用需求的还是建议开通SVIP
+
 
 ## 开发环境配置
 
