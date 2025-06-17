@@ -65,6 +65,8 @@ mkdir -p /www/wwwroot/baidupcs-web
 
 #### 2.3.1 安装 htpasswd 工具
 
+由于页面需要账号密码登录，所以需要安装htpasswd 工具
+
 ```bash
 # 安装 htpasswd 工具
 opkg update
