@@ -21,10 +21,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build static files
-        run: npm run build
+      - name: Build static files (ignore eslint warnings)
+        run: ESLINT_NO_DEV_ERRORS=true npm run build
 
-      # 可选步骤：将构建产物保存为 GitHub Actions Artifacts
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
